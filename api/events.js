@@ -25,6 +25,8 @@ export default async function handler(req, res) {
     );
 
     const data = await response.json();
+if (!data.results) { return res.status(200).json({ debug: data }); 
+}
 
     const events = data.results.map(page => {
       const props = page.properties;
