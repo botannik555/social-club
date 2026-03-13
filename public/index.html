@@ -520,23 +520,31 @@
     container.innerHTML = upcoming.map(ev => {
       const date = new Date(ev.date);
       const dateStr = date.toLocaleDateString('ru-RU', { weekday: 'short', day: 'numeric', month: 'long' });
+      const timeStr = date.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
       const imgContent = ev.image
         ? `<img src="${ev.image}" alt="${ev.name}" /><div class="card-img-overlay"></div>`
         : '🎉';
       const registerLink = ev.register || '#';
+      const isOpen = !ev.status || ev.status === 'Open';
+      const statusBadge = ev.status
+        ? `<span class="card-tag" style="${isOpen ? 'background:rgba(80,180,100,0.15);color:#2d8a4e' : 'background:rgba(180,80,80,0.12);color:#9e3a3a'}">${isOpen ? '● Открыта запись' : '● ' + ev.status}</span>`
+        : '';
       return `
         <div class="event-card">
           <div class="card-img">${imgContent}</div>
           <div class="card-body">
             <div class="card-meta">
-              ${ev.city ? `<span class="card-tag">${ev.city}</span>` : ''}
-              <span class="card-date">${dateStr}</span>
+              ${statusBadge}
+              <span class="card-date">${dateStr}, ${timeStr}</span>
             </div>
             <div class="card-title">${ev.name}</div>
-            ${ev.city ? `<div class="card-location">${ev.city}</div>` : ''}
+            ${ev.description ? `<div class="card-location">${ev.description}</div>` : ''}
             <div class="card-footer">
-              <div class="card-spots">${ev.spots ? `<span>${ev.spots}</span> мест` : '&nbsp;'}</div>
-              <a class="reg-btn" href="${registerLink}" target="_blank">Записаться</a>
+              <div class="card-spots">&nbsp;</div>
+              ${isOpen && ev.register
+                ? `<a class="reg-btn" href="${registerLink}" target="_blank">Записаться</a>`
+                : `<span class="reg-btn" style="opacity:0.4;cursor:default">Запись закрыта</span>`
+              }
             </div>
           </div>
         </div>`;
