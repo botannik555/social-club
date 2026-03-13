@@ -1,116 +1,441 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Social Club</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --black: #0e0e0e;
+      --white: #fafaf7;
+      --cream: #f4f1ea;
+      --accent: #c8a96e;
+      --accent-dark: #9d7f47;
+      --gray: #6b6b6b;
+      --light-gray: #e8e4dc;
+      --purple: #3d2f5e;
+    }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #fff; color: #1a1a1a; }
-    .nav { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.5rem; border-bottom: 1px solid #eee; }
-    .logo { font-size: 15px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
-    .nav-links { display: flex; gap: 1.5rem; }
-    .nav-links a { font-size: 13px; color: #666; text-decoration: none; cursor: pointer; }
-    .nav-btn { font-size: 13px; font-weight: 500; padding: 6px 16px; border-radius: 8px; border: 1px solid #ddd; background: #fff; cursor: pointer; }
-    .hero { padding: 3rem 1.5rem 2rem; text-align: center; }
-    .hero-tag { display: inline-block; font-size: 12px; font-weight: 500; padding: 4px 12px; border-radius: 20px; background: #EEEDFE; color: #3C3489; margin-bottom: 1rem; }
-    .hero h1 { font-size: 32px; font-weight: 600; line-height: 1.25; margin-bottom: 0.75rem; }
-    .hero p { font-size: 15px; color: #666; max-width: 380px; margin: 0 auto 1.5rem; }
-    .hero-actions { display: flex; gap: 10px; justify-content: center; }
-    .btn-primary { font-size: 14px; font-weight: 500; padding: 9px 22px; border-radius: 8px; background: #534AB7; color: #fff; border: none; cursor: pointer; }
-    .btn-outline { font-size: 14px; padding: 9px 22px; border-radius: 8px; border: 1px solid #ddd; background: transparent; cursor: pointer; }
-    .section { padding: 2rem 1.5rem; }
-    .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; }
-    .section-title { font-size: 17px; font-weight: 600; }
-    .month-nav { display: flex; align-items: center; gap: 12px; }
-    .month-nav button { width: 28px; height: 28px; border-radius: 8px; border: 1px solid #eee; background: transparent; color: #666; cursor: pointer; font-size: 14px; }
-    .month-nav span { font-size: 14px; font-weight: 500; min-width: 90px; text-align: center; }
-    .calendar { border: 1px solid #eee; border-radius: 12px; overflow: hidden; }
-    .cal-weekdays { display: grid; grid-template-columns: repeat(7, 1fr); border-bottom: 1px solid #eee; }
-    .cal-weekday { font-size: 11px; font-weight: 500; color: #999; text-align: center; padding: 10px 0; letter-spacing: 0.06em; text-transform: uppercase; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Manrope', sans-serif;
+      background: var(--white);
+      color: var(--black);
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.25rem 2.5rem;
+      background: rgba(250,250,247,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--light-gray);
+    }
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px; font-weight: 600;
+      letter-spacing: 0.02em;
+      color: var(--black);
+    }
+    .logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 2rem; }
+    .nav-links a {
+      font-size: 13px; font-weight: 500;
+      color: var(--gray); text-decoration: none;
+      letter-spacing: 0.05em; text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--black); }
+    .nav-btn {
+      font-family: 'Manrope', sans-serif;
+      font-size: 12px; font-weight: 600;
+      padding: 8px 20px;
+      border-radius: 40px;
+      border: 1.5px solid var(--black);
+      background: transparent;
+      color: var(--black);
+      cursor: pointer;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: all 0.2s;
+    }
+    .nav-btn:hover { background: var(--black); color: var(--white); }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      padding: 8rem 2rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 20% 50%, rgba(200,169,110,0.08) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 60% at 80% 30%, rgba(61,47,94,0.06) 0%, transparent 70%);
+    }
+    .hero-line {
+      width: 1px; height: 60px;
+      background: linear-gradient(to bottom, transparent, var(--accent));
+      margin: 0 auto 2rem;
+      animation: fadeIn 1s ease forwards;
+    }
+    .hero-eyebrow {
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+      animation: fadeUp 0.8s ease 0.2s both;
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(48px, 8vw, 96px);
+      font-weight: 400;
+      line-height: 1.05;
+      color: var(--black);
+      margin-bottom: 1.5rem;
+      animation: fadeUp 0.8s ease 0.4s both;
+    }
+    .hero h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+    .hero-sub {
+      font-size: 16px; font-weight: 300;
+      color: var(--gray);
+      max-width: 420px;
+      line-height: 1.7;
+      margin: 0 auto 2.5rem;
+      animation: fadeUp 0.8s ease 0.6s both;
+    }
+    .hero-actions {
+      display: flex; gap: 12px; justify-content: center;
+      animation: fadeUp 0.8s ease 0.8s both;
+    }
+    .btn-gold {
+      font-family: 'Manrope', sans-serif;
+      font-size: 13px; font-weight: 600;
+      padding: 12px 28px;
+      border-radius: 40px;
+      background: var(--accent);
+      color: var(--white);
+      border: none; cursor: pointer;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      transition: all 0.2s;
+    }
+    .btn-gold:hover { background: var(--accent-dark); transform: translateY(-1px); }
+    .btn-ghost {
+      font-family: 'Manrope', sans-serif;
+      font-size: 13px; font-weight: 500;
+      padding: 12px 28px;
+      border-radius: 40px;
+      border: 1.5px solid var(--light-gray);
+      background: transparent;
+      color: var(--black); cursor: pointer;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      transition: all 0.2s;
+    }
+    .btn-ghost:hover { border-color: var(--black); }
+
+    /* DIVIDER */
+    .divider {
+      display: flex; align-items: center; gap: 1.5rem;
+      padding: 0 2.5rem; margin: 1rem 0;
+    }
+    .divider-line { flex: 1; height: 1px; background: var(--light-gray); }
+    .divider-text { font-size: 11px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gray); }
+
+    /* CALENDAR SECTION */
+    .section { padding: 5rem 2.5rem; }
+    .section-label {
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 0.5rem;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 36px; font-weight: 400;
+      color: var(--black);
+      margin-bottom: 2rem;
+    }
+    .cal-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 1.5rem;
+    }
+    .cal-month {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px; font-weight: 400;
+    }
+    .cal-nav { display: flex; gap: 8px; }
+    .cal-nav button {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      border: 1px solid var(--light-gray);
+      background: transparent;
+      color: var(--gray); cursor: pointer;
+      font-size: 16px;
+      transition: all 0.2s;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .cal-nav button:hover { border-color: var(--black); color: var(--black); }
+    .calendar {
+      border: 1px solid var(--light-gray);
+      border-radius: 16px;
+      overflow: hidden;
+      background: var(--white);
+    }
+    .cal-weekdays {
+      display: grid; grid-template-columns: repeat(7, 1fr);
+      background: var(--cream);
+      border-bottom: 1px solid var(--light-gray);
+    }
+    .cal-weekday {
+      font-size: 10px; font-weight: 600;
+      color: var(--gray);
+      text-align: center; padding: 12px 0;
+      letter-spacing: 0.1em; text-transform: uppercase;
+    }
     .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); }
-    .cal-day { min-height: 72px; border-right: 1px solid #eee; border-bottom: 1px solid #eee; padding: 8px 6px; cursor: pointer; }
+    .cal-day {
+      min-height: 80px;
+      border-right: 1px solid var(--light-gray);
+      border-bottom: 1px solid var(--light-gray);
+      padding: 10px 8px;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
     .cal-day:nth-child(7n) { border-right: none; }
-    .cal-day:hover { background: #f9f9f9; }
+    .cal-day:hover { background: var(--cream); }
     .cal-day.other-month .day-num { color: #ccc; }
-    .cal-day.today .day-num { background: #534AB7; color: #fff; border-radius: 50%; }
-    .day-num { font-size: 12px; font-weight: 500; margin-bottom: 4px; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; }
-    .event-dot { font-size: 10px; font-weight: 500; padding: 2px 6px; border-radius: 4px; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; background: #EEEDFE; color: #3C3489; }
-    .event-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; }
-    .event-card { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 1rem; cursor: pointer; transition: border-color 0.15s; }
-    .event-card:hover { border-color: #aaa; }
-    .event-card-img { height: 120px; border-radius: 8px; margin-bottom: 10px; background: #EEEDFE; display: flex; align-items: center; justify-content: center; font-size: 36px; overflow: hidden; }
-    .event-card-img img { width: 100%; height: 100%; object-fit: cover; border-radius: 8px; }
-    .event-card-tag { font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 20px; display: inline-block; margin-bottom: 6px; background: #EEEDFE; color: #3C3489; }
-    .event-card h3 { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
-    .event-card-meta { font-size: 12px; color: #666; }
-    .event-card-footer { margin-top: 10px; padding-top: 10px; border-top: 1px solid #eee; display: flex; align-items: center; justify-content: space-between; }
-    .spots { font-size: 12px; color: #666; }
-    .reg-btn { font-size: 12px; font-weight: 500; padding: 5px 12px; border-radius: 8px; background: #534AB7; color: #fff; border: none; cursor: pointer; text-decoration: none; }
-    .loading { text-align: center; padding: 2rem; color: #999; font-size: 14px; }
-    .footer { margin-top: 2.5rem; padding: 1.5rem; border-top: 1px solid #eee; display: flex; align-items: center; justify-content: space-between; }
-    .footer-text { font-size: 12px; color: #aaa; }
+    .cal-day.today .day-num {
+      background: var(--accent);
+      color: var(--white);
+      border-radius: 50%;
+    }
+    .day-num {
+      font-size: 12px; font-weight: 500;
+      margin-bottom: 6px;
+      width: 24px; height: 24px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .event-pill {
+      font-size: 9px; font-weight: 600;
+      padding: 2px 7px;
+      border-radius: 20px;
+      margin-bottom: 3px;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      background: rgba(200,169,110,0.15);
+      color: var(--accent-dark);
+      letter-spacing: 0.03em;
+    }
+
+    /* EVENT CARDS */
+    .events-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    .event-card {
+      background: var(--white);
+      border: 1px solid var(--light-gray);
+      border-radius: 16px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .event-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+    }
+    .card-img {
+      height: 180px;
+      background: var(--cream);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 48px;
+      overflow: hidden;
+      position: relative;
+    }
+    .card-img img {
+      width: 100%; height: 100%; object-fit: cover;
+    }
+    .card-img-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(14,14,14,0.3), transparent);
+    }
+    .card-body { padding: 1.25rem; }
+    .card-meta {
+      display: flex; align-items: center; gap: 8px;
+      margin-bottom: 0.75rem;
+    }
+    .card-tag {
+      font-size: 10px; font-weight: 600;
+      padding: 3px 10px; border-radius: 20px;
+      background: var(--cream);
+      color: var(--gray);
+      letter-spacing: 0.08em; text-transform: uppercase;
+    }
+    .card-date {
+      font-size: 11px; color: var(--gray);
+      font-weight: 500;
+    }
+    .card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px; font-weight: 400;
+      color: var(--black);
+      margin-bottom: 0.5rem;
+      line-height: 1.3;
+    }
+    .card-location {
+      font-size: 12px; color: var(--gray);
+      margin-bottom: 1.25rem;
+    }
+    .card-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      padding-top: 1rem;
+      border-top: 1px solid var(--light-gray);
+    }
+    .card-spots { font-size: 12px; color: var(--gray); font-weight: 500; }
+    .card-spots span { color: var(--accent); font-weight: 600; }
+    .reg-btn {
+      font-family: 'Manrope', sans-serif;
+      font-size: 11px; font-weight: 600;
+      padding: 7px 16px;
+      border-radius: 40px;
+      background: var(--black);
+      color: var(--white);
+      border: none; cursor: pointer;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .reg-btn:hover { background: var(--accent); }
+
+    /* LOADING */
+    .loading {
+      text-align: center; padding: 3rem;
+      color: var(--gray); font-size: 14px;
+    }
+    .empty {
+      text-align: center; padding: 3rem;
+      color: var(--gray); font-size: 14px;
+    }
+
+    /* FOOTER */
+    footer {
+      margin-top: 4rem;
+      padding: 2rem 2.5rem;
+      border-top: 1px solid var(--light-gray);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .footer-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 16px; color: var(--black);
+    }
+    .footer-logo span { color: var(--accent); }
+    .footer-text { font-size: 12px; color: #bbb; }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; } to { opacity: 1; }
+    }
   </style>
 </head>
 <body>
 
-<div class="nav">
-  <div class="logo">Social Club</div>
+<nav>
+  <div class="logo">Social<span>.</span>Club</div>
   <div class="nav-links">
-    <a href="#events">Events</a>
-    <a href="#about">About</a>
+    <a href="#events">Мероприятия</a>
+    <a href="#calendar">Календарь</a>
+    <a href="#about">О нас</a>
   </div>
-  <button class="nav-btn">Join club</button>
-</div>
+  <button class="nav-btn">Вступить</button>
+</nav>
 
 <div class="hero">
-  <div class="hero-tag">Moscow · Est. 2023</div>
-  <h1>Your community,<br>your calendar</h1>
-  <p>Discover events, meet people, and make every week memorable.</p>
+  <div class="hero-bg"></div>
+  <div class="hero-line"></div>
+  <div class="hero-eyebrow">Сообщество · События · Люди</div>
+  <h1>Твоё место,<br><em>твой клуб</em></h1>
+  <p class="hero-sub">Открывай новые события, знакомься с интересными людьми и делай каждую неделю незабываемой.</p>
   <div class="hero-actions">
-    <button class="btn-primary" onclick="document.getElementById('events').scrollIntoView({behavior:'smooth'})">Browse events</button>
-    <button class="btn-outline">Learn more</button>
+    <button class="btn-gold" onclick="document.getElementById('events').scrollIntoView({behavior:'smooth'})">Смотреть события</button>
+    <button class="btn-ghost" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})">О клубе</button>
   </div>
 </div>
 
-<div class="section" id="calendar-section">
-  <div class="section-header">
-    <div class="section-title" id="cal-title">Loading...</div>
-    <div class="month-nav">
+<div class="divider">
+  <div class="divider-line"></div>
+  <div class="divider-text">Календарь событий</div>
+  <div class="divider-line"></div>
+</div>
+
+<div class="section" id="calendar">
+  <div class="section-label">Расписание</div>
+  <div class="cal-header">
+    <div class="cal-month" id="cal-title">Загрузка...</div>
+    <div class="cal-nav">
       <button onclick="changeMonth(-1)">&#8592;</button>
-      <span id="month-label"></span>
       <button onclick="changeMonth(1)">&#8594;</button>
     </div>
   </div>
   <div class="calendar">
     <div class="cal-weekdays">
-      <div class="cal-weekday">Mon</div><div class="cal-weekday">Tue</div>
-      <div class="cal-weekday">Wed</div><div class="cal-weekday">Thu</div>
-      <div class="cal-weekday">Fri</div><div class="cal-weekday">Sat</div>
-      <div class="cal-weekday">Sun</div>
+      <div class="cal-weekday">Пн</div>
+      <div class="cal-weekday">Вт</div>
+      <div class="cal-weekday">Ср</div>
+      <div class="cal-weekday">Чт</div>
+      <div class="cal-weekday">Пт</div>
+      <div class="cal-weekday">Сб</div>
+      <div class="cal-weekday">Вс</div>
     </div>
     <div class="cal-grid" id="cal-grid"></div>
   </div>
 </div>
 
-<div class="section" id="events">
-  <div class="section-header">
-    <div class="section-title">Upcoming events</div>
-  </div>
-  <div id="events-container" class="loading">Loading events...</div>
+<div class="divider">
+  <div class="divider-line"></div>
+  <div class="divider-text">Ближайшие события</div>
+  <div class="divider-line"></div>
 </div>
 
-<div class="footer">
-  <div class="footer-text">© 2026 Social Club</div>
-  <div class="footer-text">Powered by Notion</div>
+<div class="section" id="events">
+  <div class="section-label">Афиша</div>
+  <div class="section-title">Ближайшие события</div>
+  <div id="events-container" class="loading">Загружаем события...</div>
 </div>
+
+<div class="divider" id="about">
+  <div class="divider-line"></div>
+  <div class="divider-text">О клубе</div>
+  <div class="divider-line"></div>
+</div>
+
+<footer>
+  <div class="footer-logo">Social<span>.</span>Club</div>
+  <div class="footer-text">© 2026 Social Club · На основе Notion</div>
+</footer>
 
 <script>
+  const MONTHS_RU = ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
+  const DAYS_RU = ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'];
+
   let allEvents = [];
   let currentYear = new Date().getFullYear();
   let currentMonth = new Date().getMonth();
-
-  const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 
   async function loadEvents() {
     try {
@@ -119,15 +444,12 @@
       renderCalendar();
       renderCards();
     } catch (e) {
-      document.getElementById('events-container').innerHTML = '<p style="color:#999;font-size:14px;">Could not load events.</p>';
+      document.getElementById('events-container').innerHTML = '<p class="empty">Не удалось загрузить события.</p>';
     }
   }
 
   function renderCalendar() {
-    const label = MONTHS[currentMonth] + ' ' + currentYear;
-    document.getElementById('cal-title').textContent = label;
-    document.getElementById('month-label').textContent = label;
-
+    document.getElementById('cal-title').textContent = MONTHS_RU[currentMonth] + ' ' + currentYear;
     const grid = document.getElementById('cal-grid');
     grid.innerHTML = '';
 
@@ -162,10 +484,10 @@
       cell.innerHTML = `<div class="day-num">${d}</div>`;
       if (monthEvents[d]) {
         monthEvents[d].forEach(ev => {
-          const dot = document.createElement('div');
-          dot.className = 'event-dot';
-          dot.textContent = ev.name;
-          cell.appendChild(dot);
+          const pill = document.createElement('div');
+          pill.className = 'event-pill';
+          pill.textContent = ev.name;
+          cell.appendChild(pill);
         });
       }
       grid.appendChild(cell);
@@ -190,27 +512,32 @@
       .sort((a, b) => new Date(a.date) - new Date(b.date));
 
     if (upcoming.length === 0) {
-      container.innerHTML = '<p style="color:#999;font-size:14px;">No upcoming events.</p>';
+      container.innerHTML = '<p class="empty">Нет предстоящих событий.</p>';
       return;
     }
 
-    container.className = 'event-cards';
+    container.className = 'events-grid';
     container.innerHTML = upcoming.map(ev => {
       const date = new Date(ev.date);
-      const dateStr = date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+      const dateStr = date.toLocaleDateString('ru-RU', { weekday: 'short', day: 'numeric', month: 'long' });
       const imgContent = ev.image
-        ? `<img src="${ev.image}" alt="${ev.name}" />`
+        ? `<img src="${ev.image}" alt="${ev.name}" /><div class="card-img-overlay"></div>`
         : '🎉';
       const registerLink = ev.register || '#';
       return `
         <div class="event-card">
-          <div class="event-card-img">${imgContent}</div>
-          ${ev.city ? `<span class="event-card-tag">${ev.city}</span>` : ''}
-          <h3>${ev.name}</h3>
-          <div class="event-card-meta">${dateStr}${ev.city ? ' · ' + ev.city : ''}</div>
-          <div class="event-card-footer">
-            <span class="spots">${ev.spots ? ev.spots + ' spots left' : ''}</span>
-            <a class="reg-btn" href="${registerLink}" target="_blank">Register</a>
+          <div class="card-img">${imgContent}</div>
+          <div class="card-body">
+            <div class="card-meta">
+              ${ev.city ? `<span class="card-tag">${ev.city}</span>` : ''}
+              <span class="card-date">${dateStr}</span>
+            </div>
+            <div class="card-title">${ev.name}</div>
+            ${ev.city ? `<div class="card-location">${ev.city}</div>` : ''}
+            <div class="card-footer">
+              <div class="card-spots">${ev.spots ? `<span>${ev.spots}</span> мест` : '&nbsp;'}</div>
+              <a class="reg-btn" href="${registerLink}" target="_blank">Записаться</a>
+            </div>
           </div>
         </div>`;
     }).join('');
